@@ -1,4 +1,4 @@
-# 💊 ProcDNA PharmaSales Intelligence Pipeline
+# 💊 Enterprise PharmaSales Intelligence Pipeline
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)
@@ -13,7 +13,7 @@ An end-to-end, cloud-native Commercial Analytics SaaS platform engineered for th
 * **Dynamic Vendor Ingestion Engine:** A UI-driven portal that allows users to upload disparate, messy third-party vendor CSV files. It features a dynamic schema-mapping engine that normalizes custom column names to the database target schema, enforces data types (`errors='coerce'`), and appends the clean data to the cloud warehouse in real-time.
 * **Enterprise Security Gateway:** Implemented Role-Based Access Control (RBAC) utilizing SHA-256 password cryptography, strict regex password validation, and Streamlit session state management to protect sensitive commercial data.
 * **Defensive ETL Pipeline:** Automated Python pipeline that extracts raw data, performs Quality Gatekeeping (detecting negative pricing, dropping null critical identifiers), transforms KPIs, and securely loads to a Render-hosted PostgreSQL database.
-* **Synthetic Data Engineering:** Programmatic generation of 10,000+ rows of realistic pharmaceutical sales data utilizing `numpy` normal distributions and probability to simulate accurate enterprise data volume.
+* **Synthetic Data Engineering:** Programmatic generation of 10,000+ rows of realistic pharmaceutical sales data modeling US and international global markets (excluding India) utilizing `numpy` normal distributions to simulate accurate enterprise data volume.
 * **Real-Time BI Dashboard:** A reactive frontend built on Streamlit and Plotly that caches database queries for high-performance KPI rendering and multidimensional filtering.
 
 ## 🏗️ System Architecture
@@ -36,8 +36,8 @@ If you wish to run this pipeline locally on your machine:
 
 1. **Clone the repository:**
 
-        git clone [https://github.com/abhinavgu27E/procdna-pharma-pipeline.git](https://github.com/abhinavgu27E/procdna-pharma-pipeline.git)
-        cd procdna-pharma-pipeline
+        git clone https://github.com/abhinavgu27E/pharmasales-pipeline.git
+        cd pharmasales-pipeline
 
 2. **Set up Environment Variables:**
    Create a `.env` file in the root directory and add your PostgreSQL connection string:

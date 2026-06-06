@@ -126,6 +126,17 @@ selected_drug = st.sidebar.multiselect("Drug", df['Drug_Name'].unique(), default
 
 filtered_df = df[(df['Region'].isin(selected_region)) & (df['Drug_Name'].isin(selected_drug))]
 
+# --- NEW: POWER BI EXPORT BUTTON ---
+st.sidebar.markdown("---")
+st.sidebar.header("Export Data")
+csv_data = filtered_df.to_csv(index=False).encode('utf-8')
+st.sidebar.download_button(
+    label="⬇️ Download CSV for Power BI",
+    data=csv_data,
+    file_name="pharma_sales_export.csv",
+    mime="text/csv"
+)
+
 col1, col2, col3 = st.columns(3)
 col1.metric("Total Revenue", f"${filtered_df['Total_Revenue'].sum():,.2f}")
 col2.metric("Units Dispensed", f"{filtered_df['Units_Dispensed'].sum():,.0f}")

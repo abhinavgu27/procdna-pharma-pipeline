@@ -1,38 +1,27 @@
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
+import random
 
-def generate_pharma_data(num_records=10000):
-    print(f"Generating {num_records} rows of mock pharmaceutical data...")
+def generate_pharma_data(num_rows=10000):
+    np.random.seed(42)
     
-    # Mock Data Arrays
-    drugs = ['CardioZest', 'NeuroCalm', 'Immunex', 'DiabetoReg', 'PulmoClear']
-    regions = ['North America', 'Europe', 'APAC', 'Latin America', 'MENA']
-    specialties = ['Cardiology', 'Neurology', 'Internal Medicine', 'Endocrinology', 'Pulmonology']
+    regions = ['North America', 'Europe', 'APAC', 'MENA', 'Latin America']
+    drugs = ['CardioZest', 'NeuroCalm', 'Immunex', 'PulmoClear', 'DiabetoReg']
     
-    # Generate random dates over the last year
-    start_date = datetime.now() - timedelta(days=365)
-    dates = [start_date + timedelta(days=np.random.randint(0, 365)) for _ in range(num_records)]
+    data = {
+        'Transaction_ID': [f"TXN-{i+1000}" for i in range(num_rows)],
+        'Region': np.random.choice(regions, num_rows),
+        'Drug_Name': np.random.choice(drugs, num_rows),
+        'Units_Dispensed': np.random.randint(50, 500, num_rows),
+        # Generates a realistic price with slight variations
+        'Unit_Price': np.round(np.random.normal(200, 20, num_rows), 2) 
+    }
     
-    # Build the DataFrame
-    df = pd.DataFrame({
-        'Transaction_ID': [f"TRX-{100000 + i}" for i in range(num_records)],
-        'Date': dates,
-        'Drug_Name': np.random.choice(drugs, num_records),
-        'Region': np.random.choice(regions, num_records),
-        'Physician_Specialty': np.random.choice(specialties, num_records),
-        'Units_Dispensed': np.random.randint(10, 500, num_records),
-        'Unit_Price': np.random.uniform(45.50, 350.00, num_records).round(2)
-    })
+    df = pd.DataFrame(data)
     
-    # Inject a few missing values to prove your ETL cleaning skills later
-    missing_indices = np.random.choice(df.index, size=int(num_records * 0.02), replace=False)
-    df.loc[missing_indices, 'Physician_Specialty'] = np.nan
-    
-    # Save to CSV inside the data folder
-    filename = 'data/raw_pharma_sales.csv'
-    df.to_csv(filename, index=False)
-    print(f"Success! Data saved to {filename}")
+    # Save to the data folder
+    df.to_csv('raw_pharma_sales.csv', index=False)
+    print(f"✅ Successfully generated {num_rows} rows of raw pharmaceutical data.")
 
 if __name__ == "__main__":
     generate_pharma_data()

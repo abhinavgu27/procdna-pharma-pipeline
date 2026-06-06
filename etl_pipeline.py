@@ -2,56 +2,44 @@ import os
 import pandas as pd
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
+import logging
 
-# Load database URL from .env file
-load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-if not DATABASE_URL:
-    raise ValueError("DATABASE_URL not found in .env file!")
-
-# Convert connection string from 'postgresql://' to 'postgresql+psycopg2://' for SQLAlchemy compatibility
-if DATABASE_URL.startswith("postgresql://"):
-    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg2://", 1)
+# Set up enterprise logging
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 def run_etl():
-    print("--- Starting ETL Pipeline ---")
+    load_dotenv()
+    db_url = os.getenv("DATABASE_URL")
     
-    # 1. EXTRACT
-    csv_path = 'data/raw_pharma_sales.csv'
-    print(f"Extracting data from {csv_path}...")
-    try:
-        df = pd.read_csv(csv_path)
-    except FileNotFoundError:
-        print(f"Error: {csv_path} not found. Please run generate_data.py first.")
+    if not db_url:
+        logging.error("DATABASE_URL is missing. Check your .env file.")
         return
 
-    # 2. TRANSFORM
-    print("Transforming data...")
-    
-    # Clean Missing Values (Data Quality Rule)
-    # If Physician_Specialty is missing, fill with 'Unknown'
-    missing_count = df['Physician_Specialty'].isnull().sum()
-    df['Physician_Specialty'] = df['Physician_Specialty'].fillna('Unknown')
-    print(f"-> Handled missing data: Filled {missing_count} rows in 'Physician_Specialty' with 'Unknown'.")
-    
-    # Ensure proper data types
-    df['Date'] = pd.to_datetime(df['Date'])
-    
-    # Business Logic Calculation: Total Revenue
-    df['Total_Revenue'] = (df['Units_Dispensed'] * df['Unit_Price']).round(2)
-    print("-> Calculated business metric: 'Total_Revenue' = Units * Price.")
-    
-    # 3. LOAD
-    print("Connecting to Render Cloud PostgreSQL...")
-    engine = create_engine(DATABASE_URL)
-    
-    print("Loading data into 'pharma_sales' table...")
-    # if_exists='replace' automatically creates the table schema structure for us on Render!
-    df.to_sql('pharma_sales', engine, if_exists='replace', index=False)
-    
-    print("--- ETL Pipeline Completed Successfully! ---")
-    print(f"Loaded {len(df)} rows into the cloud.")
+    try:
+        # 1. Extract
+        logging.info("Extracting raw data...")
+        df = pd.read_csv('raw_pharma_sales.csv')
+        
+        # 2. Validate (Quality Gatekeeping)
+        if (df['Unit_Price'] < 0).any():
+            raise ValueError("CRITICAL: Negative pricing detected in source data.")
+        if df['Region'].isnull().any():
+            logging.warning("Missing regions found. Dropping incomplete records.")
+            df = df.dropna(subset=['Region'])
+            
+        # 3. Transform
+        logging.info("Transforming data...")
+        df['Total_Revenue'] = df['Units_Dispensed'] * df['Unit_Price']
+        
+        # 4. Load
+        logging.info("Connecting to Render Cloud Database...")
+        engine = create_engine(db_url)
+        df.to_sql('pharma_sales', engine, if_exists='replace', index=False)
+        
+        logging.info("✅ ETL Pipeline completed successfully. Data is live in the cloud.")
+        
+    except Exception as e:
+        logging.error(f"ETL Pipeline Failed: {e}")
 
 if __name__ == "__main__":
     run_etl()

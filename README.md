@@ -15,6 +15,9 @@ An end-to-end, cloud-native Commercial Analytics SaaS platform engineered for th
 * **Defensive ETL Pipeline:** Automated Python pipeline that extracts raw data, performs Quality Gatekeeping (detecting negative pricing, dropping null critical identifiers), transforms KPIs, and securely loads to a Render-hosted PostgreSQL database.
 * **Synthetic Data Engineering:** Programmatic generation of 10,000+ rows of realistic pharmaceutical sales data modeling US and international global markets (excluding India) utilizing `numpy` normal distributions to simulate accurate enterprise data volume.
 * **Real-Time BI Dashboard:** A reactive frontend built on Streamlit and Plotly that caches database queries for high-performance KPI rendering and multidimensional filtering.
+* ## 📊 Business Intelligence Integration
+Data processed by the ETL pipeline can be exported instantly from the dashboard and loaded into **Power BI** or **Tableau** for advanced enterprise visualization and reporting.
+![Power BI Dashboard](screenshots/powerbi_export.png)
 
 ## 🏗️ System Architecture
 

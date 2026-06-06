@@ -1,31 +1,62 @@
-# 💊 PharmaSales Intelligence Data Pipeline
+# 💊 ProcDNA PharmaSales Intelligence Pipeline
 
-A full-stack, production-grade data engineering pipeline and interactive analytics dashboard built to process and visualize commercial pharmaceutical data.
+![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Cloud-blue.svg)
+![Pandas](https://img.shields.io/badge/Pandas-Data_Engineering-green.svg)
 
-**🔗 [Live Dashboard](https://procdna-pharma-pipeline.onrender.com/)** ## 🏗️ System Architecture
+## 📌 Executive Summary
+An end-to-end, cloud-native Commercial Analytics SaaS platform engineered for the pharmaceutical industry. This project demonstrates full-stack data engineering capabilities, transitioning from synthetic data generation and defensive ETL processing to secure cloud warehousing and dynamic data ingestion.
 
-This project simulates a modern enterprise data stack, moving raw commercial data through an ETL pipeline into a cloud data warehouse, and finally surfacing it in a real-time BI layer.
+## 🚀 Key Enterprise Features
 
-1. **The Source:** Programmatically generated mock pharmaceutical datasets (`pandas`, `numpy`) simulating unstructured transaction logs.
-2. **The Pipeline (ETL):** A Python-based extraction and transformation engine (`SQLAlchemy`) that cleans null values, enforces data typing, and calculates key business metrics (Total Revenue).
-3. **The Data Warehouse:** A fully remote, cloud-hosted **PostgreSQL** relational database deployed on Render.
-4. **The Presentation Layer:** An interactive, responsive Business Intelligence dashboard built with **Streamlit** and **Plotly**, featuring real-time SQL querying and dynamic cross-filtering.
+* **Dynamic Vendor Ingestion Engine:** A UI-driven portal that allows users to upload disparate, messy third-party vendor CSV files. It features a dynamic schema-mapping engine that normalizes custom column names to the database target schema, enforces data types (`errors='coerce'`), and appends the clean data to the cloud warehouse in real-time.
+* **Enterprise Security Gateway:** Implemented Role-Based Access Control (RBAC) utilizing SHA-256 password cryptography, strict regex password validation, and Streamlit session state management to protect sensitive commercial data.
+* **Defensive ETL Pipeline:** Automated Python pipeline that extracts raw data, performs Quality Gatekeeping (detecting negative pricing, dropping null critical identifiers), transforms KPIs, and securely loads to a Render-hosted PostgreSQL database.
+* **Synthetic Data Engineering:** Programmatic generation of 10,000+ rows of realistic pharmaceutical sales data utilizing `numpy` normal distributions and probability to simulate accurate enterprise data volume.
+* **Real-Time BI Dashboard:** A reactive frontend built on Streamlit and Plotly that caches database queries for high-performance KPI rendering and multidimensional filtering.
 
-## 🛠️ Technology Stack
+## 🏗️ System Architecture
 
-* **Language:** Python 3.11
-* **Database:** PostgreSQL (Cloud-hosted via Render)
-* **Data Processing:** Pandas, NumPy
-* **Database ORM:** SQLAlchemy, psycopg2
-* **Frontend Analytics:** Streamlit
-* **Data Visualization:** Plotly Express
-* **DevOps/Deployment:** Docker, Git, Render Web Services
+1. **Source:** `generate_data.py` (Creates baseline corporate data) OR Vendor CSV Upload.
+2. **Transform (ETL):** `etl_pipeline.py` (Validates types, cleans anomalies, calculates revenue).
+3. **Warehouse:** PostgreSQL Database (Hosted securely on Render).
+4. **Application Layer:** `app.py` (Handles Auth, UI, Data Viz, and Dynamic Schema Mapping).
 
-## 🚀 Local Development (Docker)
+## 💻 Technology Stack
+* **Data Processing & Analytics:** Python, Pandas, NumPy
+* **Cloud Database:** PostgreSQL, SQLAlchemy
+* **Frontend Application:** Streamlit, Plotly Express
+* **Security & Auth:** `hashlib` (SHA-256), `re` (Regex)
+* **DevOps & Hosting:** Git, Render Cloud Services
 
-To run this pipeline locally in an isolated container environment:
+## ⚙️ Local Development Setup
 
-1. Clone the repository:
+If you wish to run this pipeline locally on your machine:
+
+1. **Clone the repository:**
+2. Set up Environment Variables:
+Create a .env file in the root directory and add your PostgreSQL connection string:
+
+Plaintext
+DATABASE_URL=postgresql://username:password@host/database_name
+Install Dependencies:
+
+Bash
+pip install -r requirements.txt
+Initialize the Data Pipeline:
+
+Bash
+# 1. Generate the initial synthetic dataset
+python generate_data.py
+
+# 2. Run the ETL pipeline to clean and push data to your database
+python etl_pipeline.py
+Launch the Application:
+
+Bash
+streamlit run app.py
+Developed as a demonstration of production-grade Data Engineering and Commercial Analytics architecture.
    ```bash
-   git clone [https://github.com/YOUR_USERNAME/procdna-pharma-pipeline.git](https://github.com/YOUR_USERNAME/procdna-pharma-pipeline.git)
+   git clone [https://github.com/abhinavgu27E/procdna-pharma-pipeline.git](https://github.com/YOUR_USERNAME/procdna-pharma-pipeline.git)
    cd procdna-pharma-pipeline

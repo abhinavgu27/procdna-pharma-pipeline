@@ -27,7 +27,7 @@ def validate_password(password):
     return "Valid"
 
 if not st.session_state['logged_in']:
-    st.markdown("<h1 style='text-align: center;'>💊 ProcDNA Analytics Portal</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>💊 Global Pharma Analytics Portal</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; margin-bottom: 50px;'>Authorized Personnel Only.</p>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -82,7 +82,9 @@ st.title("💊 PharmaSales Intelligence Dashboard")
 
 # --- 4. DYNAMIC INGESTION PORTAL ---
 with st.expander("📥 Enterprise Data Ingestion Portal (Upload Custom Files)", expanded=False):
+    st.caption("Enterprise Evaluator Sandbox: Upload any custom commercial CSV dataset to test the dynamic schema mapping engine.")
     uploaded_file = st.file_uploader("Drop raw vendor sales file here", type=["csv"])
+    
     if uploaded_file is not None:
         raw_uploaded_df = pd.read_csv(uploaded_file)
         st.dataframe(raw_uploaded_df.head(3))

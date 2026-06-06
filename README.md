@@ -58,5 +58,7 @@ Bash
 streamlit run app.py
 Developed as a demonstration of production-grade Data Engineering and Commercial Analytics architecture.
    ```bash
-   git clone [https://github.com/abhinavgu27E/procdna-pharma-pipeline.git](https://github.com/YOUR_USERNAME/procdna-pharma-pipeline.git)
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/abhinavgu27E/procdna-pharma-pipeline.git](https://github.com/abhinavgu27E/procdna-pharma-pipeline.git)
    cd procdna-pharma-pipeline

@@ -35,30 +35,6 @@ An end-to-end, cloud-native Commercial Analytics SaaS platform engineered for th
 If you wish to run this pipeline locally on your machine:
 
 1. **Clone the repository:**
-2. Set up Environment Variables:
-Create a .env file in the root directory and add your PostgreSQL connection string:
-
-Plaintext
-DATABASE_URL=postgresql://username:password@host/database_name
-Install Dependencies:
-
-Bash
-pip install -r requirements.txt
-Initialize the Data Pipeline:
-
-Bash
-# 1. Generate the initial synthetic dataset
-python generate_data.py
-
-# 2. Run the ETL pipeline to clean and push data to your database
-python etl_pipeline.py
-Launch the Application:
-
-Bash
-streamlit run app.py
-Developed as a demonstration of production-grade Data Engineering and Commercial Analytics architecture.
-   ```bash
-1. **Clone the repository:**
    ```bash
    git clone [https://github.com/abhinavgu27E/procdna-pharma-pipeline.git](https://github.com/abhinavgu27E/procdna-pharma-pipeline.git)
    cd procdna-pharma-pipeline
